@@ -1,6 +1,6 @@
 ﻿using Input;
-using Unity.Netcode;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Core.Player
 {

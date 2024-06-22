@@ -1,5 +1,4 @@
-﻿using System;
-using Input;
+﻿using Input;
 using UnityEngine;
 using Unity.Netcode;
 
