@@ -1,4 +1,5 @@
-﻿using Input;
+﻿using Core.Combat;
+using Input;
 using UnityEngine;
 using Unity.Netcode;
 
@@ -67,6 +68,11 @@ namespace Core.Player
             projectileInstance.transform.up = direction;
             
             Physics2D.IgnoreCollision(playerCollider, projectileInstance.GetComponent<Collider2D>());
+
+            if (projectileInstance.TryGetComponent<DealDamageOnContact>(out var dealDamage))
+            {
+                dealDamage.SetOwner(OwnerClientId);
+            }
             
             if (projectileInstance.TryGetComponent<Rigidbody2D>(out var rb))
             {
