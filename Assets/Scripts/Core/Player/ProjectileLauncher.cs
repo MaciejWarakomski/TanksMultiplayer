@@ -1,6 +1,6 @@
-﻿using Core.Coins;
+﻿using Input;
+using Core.Coins;
 using Core.Combat;
-using Input;
 using UnityEngine;
 using Unity.Netcode;
 
