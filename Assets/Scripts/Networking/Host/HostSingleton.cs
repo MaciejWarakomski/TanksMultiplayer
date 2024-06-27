@@ -20,7 +20,7 @@ namespace Networking.Host
             }
         }
 
-        private HostGameManager _gameManager;
+        public HostGameManager GameManager { get; private set; }
         
         private void Start()
         {
@@ -29,7 +29,7 @@ namespace Networking.Host
 
         public void CreateHost()
         {
-            _gameManager = new HostGameManager();
+            GameManager = new HostGameManager();
         }
     }
 }
