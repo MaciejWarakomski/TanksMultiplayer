@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using Unity.Networking.Transport.Relay;
 
@@ -88,7 +89,8 @@ namespace Networking.Host
             
             var userData = new UserData
             {
-                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name")
+                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+                userAuthId = AuthenticationService.Instance.PlayerId
             };
             var payload = JsonUtility.ToJson(userData);
             var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
