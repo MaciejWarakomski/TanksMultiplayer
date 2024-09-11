@@ -14,7 +14,7 @@ using Unity.Networking.Transport.Relay;
 
 namespace Networking.Client
 {
-    public class ClientGameManager
+    public class ClientGameManager : IDisposable
     {
         private JoinAllocation _allocation;
         private NetworkClient _networkClient;
@@ -62,6 +62,11 @@ namespace Networking.Client
             
             NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
             NetworkManager.Singleton.StartClient();
+        }
+
+        public void Dispose()
+        {
+            _networkClient?.Dispose();
         }
     }
 }

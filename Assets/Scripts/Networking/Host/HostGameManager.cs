@@ -18,7 +18,7 @@ using Unity.Networking.Transport.Relay;
 
 namespace Networking.Host
 {
-    public class HostGameManager
+    public class HostGameManager : IDisposable
     {
         private Allocation _allocation;
         private NetworkServer _networkServer;
@@ -109,6 +109,27 @@ namespace Networking.Host
                 Lobbies.Instance.SendHeartbeatPingAsync(_lobbyId);
                 yield return delay;
             }
+        }
+
+        public async void Dispose()
+        {
+            HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
+            
+            if (!string.IsNullOrEmpty(_lobbyId))
+            {
+                try
+                {
+                    await Lobbies.Instance.DeleteLobbyAsync(_lobbyId);
+                }
+                catch (LobbyServiceException e)
+                {
+                    Debug.Log(e);
+                }
+
+                _lobbyId = string.Empty;
+            }
+            
+            _networkServer?.Dispose();
         }
     }
 }

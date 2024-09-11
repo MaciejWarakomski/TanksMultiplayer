@@ -1,9 +1,10 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine.SceneManagement;
 
 namespace Networking.Client
 {
-    public class NetworkClient
+    public class NetworkClient : IDisposable
     {
         private readonly NetworkManager _networkManager;
 
@@ -29,6 +30,12 @@ namespace Networking.Client
             {
                 _networkManager.Shutdown();
             }
+        }
+
+        public void Dispose()
+        {
+            if (_networkManager == null) return;
+            _networkManager.OnClientDisconnectCallback -= OnClientDisconnect;
         }
     }
 }
