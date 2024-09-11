@@ -1,6 +1,8 @@
-﻿using System;
+﻿using UI;
+using System;
 using UnityEngine;
 using Unity.Netcode;
+using Networking.Shared;
 using Unity.Services.Core;
 using Unity.Services.Relay;
 using System.Threading.Tasks;
@@ -46,6 +48,14 @@ namespace Networking.Client
             var relayServerData = new RelayServerData(_allocation, "dtls");
             unityTransport.SetRelayServerData(relayServerData);
 
+            var userData = new UserData
+            {
+                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name")
+            };
+            var payload = JsonUtility.ToJson(userData);
+            var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
+            
+            NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
             NetworkManager.Singleton.StartClient();
         }
     }
