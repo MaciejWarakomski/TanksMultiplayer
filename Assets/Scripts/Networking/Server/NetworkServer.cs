@@ -47,6 +47,18 @@ namespace Networking.Server
             }
         }
 
+        public UserData GetUserDataByClientId(ulong clientId)
+        {
+            if (_clientIdToAuthId.TryGetValue(clientId, out var authId))
+            {
+                if (_authIdToUserData.TryGetValue(authId, out var userData))
+                {
+                    return userData;
+                }
+            }
+            return null;
+        }
+        
         public void Dispose()
         {
             if (_networkManager == null) return;

@@ -20,8 +20,9 @@ namespace Networking.Host
 {
     public class HostGameManager : IDisposable
     {
+        public NetworkServer NetworkServer { get; private set; }
+        
         private Allocation _allocation;
-        private NetworkServer _networkServer;
 
         private string _joinCode;
         private string _lobbyId;
@@ -85,7 +86,7 @@ namespace Networking.Host
                 return;
             }
 
-            _networkServer = new NetworkServer(NetworkManager.Singleton);
+            NetworkServer = new NetworkServer(NetworkManager.Singleton);
             
             var userData = new UserData
             {
@@ -129,7 +130,7 @@ namespace Networking.Host
                 _lobbyId = string.Empty;
             }
             
-            _networkServer?.Dispose();
+            NetworkServer?.Dispose();
         }
     }
 }
