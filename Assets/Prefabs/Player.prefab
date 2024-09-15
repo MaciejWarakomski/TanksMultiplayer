@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3248378655
+  GlobalObjectIdHash: 839030324
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1114,6 +1114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1925cbeafd1458aa8b0f62ca1ddc6e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Health>k__BackingField: {fileID: 7737439507091908992}
   virtualCamera: {fileID: 8067678149041978280}
   ownerPriority: 15
   playerName:
