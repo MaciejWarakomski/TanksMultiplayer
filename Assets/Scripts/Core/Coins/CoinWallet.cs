@@ -3,7 +3,7 @@ using Unity.Netcode;
 
 namespace Core.Coins
 {
-    public class CoinCollector : NetworkBehaviour
+    public class CoinWallet : NetworkBehaviour
     {
         public NetworkVariable<int> TotalCoins = new();
 

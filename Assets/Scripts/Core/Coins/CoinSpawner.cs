@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Unity.Netcode;
-using Random = UnityEngine.Random;
 
 namespace Core.Coins
 {

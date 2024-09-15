@@ -1,8 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
-using Unity.Services.Lobbies.Models;
 
-namespace UI
+namespace UI.Lobby
 {
     public class LobbyItem : MonoBehaviour
     {
@@ -10,9 +9,9 @@ namespace UI
         [SerializeField] private TMP_Text lobbyPlayersText;
 
         private LobbiesList _lobbiesList;
-        private Lobby _lobby;
+        private Unity.Services.Lobbies.Models.Lobby _lobby;
         
-        public void Initialize(LobbiesList lobbiesList, Lobby lobby)
+        public void Initialize(LobbiesList lobbiesList, Unity.Services.Lobbies.Models.Lobby lobby)
         {
             _lobbiesList = lobbiesList;
             _lobby = lobby;

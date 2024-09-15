@@ -4,7 +4,7 @@ using Unity.Services.Lobbies;
 using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
 
-namespace UI
+namespace UI.Lobby
 {
     public class LobbiesList : MonoBehaviour
     {
@@ -63,7 +63,7 @@ namespace UI
             _isRefreshing = false;
         }
 
-        public async void JoinAsync(Lobby lobby)
+        public async void JoinAsync(Unity.Services.Lobbies.Models.Lobby lobby)
         {
             if (_isJoining) return;
             _isJoining = true;

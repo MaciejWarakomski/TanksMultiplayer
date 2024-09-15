@@ -15,7 +15,7 @@ namespace Core.Player
         [SerializeField] private GameObject clientProjectilePrefab;
         [SerializeField] private GameObject muzzleFlash;
         [SerializeField] private Collider2D playerCollider;
-        [SerializeField] private CoinCollector coinCollector;
+        [SerializeField] private CoinWallet coinWallet;
 
         [Header("Settings")] 
         [SerializeField] private float projectileSpeed;
@@ -64,7 +64,7 @@ namespace Core.Player
                 _timer -= Time.deltaTime;
             }
             
-            if (!_shouldFire || _timer > 0f || coinCollector.TotalCoins.Value < costToFire) return;
+            if (!_shouldFire || _timer > 0f || coinWallet.TotalCoins.Value < costToFire) return;
             
             PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
             SpawnDummyProjectile(projectileSpawnPoint.position, projectileSpawnPoint.up);
@@ -74,9 +74,9 @@ namespace Core.Player
         [ServerRpc]
         private void PrimaryFireServerRpc(Vector3 spawnPos, Vector3 direction)
         {
-            if (coinCollector.TotalCoins.Value < costToFire) return;
+            if (coinWallet.TotalCoins.Value < costToFire) return;
             
-            coinCollector.SpendCoins(costToFire);
+            coinWallet.SpendCoins(costToFire);
             
             var projectileInstance = Instantiate(serverProjectilePrefab, spawnPos, Quaternion.identity);
             projectileInstance.transform.up = direction;

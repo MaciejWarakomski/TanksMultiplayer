@@ -1035,7 +1035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 839030324
+  GlobalObjectIdHash: 3248378655
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -1115,6 +1115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Health>k__BackingField: {fileID: 7737439507091908992}
+  <Wallet>k__BackingField: {fileID: 5059252182061882819}
   virtualCamera: {fileID: 8067678149041978280}
   ownerPriority: 15
   playerName:
@@ -1201,7 +1202,7 @@ MonoBehaviour:
   clientProjectilePrefab: {fileID: 3725323318267555168, guid: a9540dcf686afdd4f8a46f948caf6632, type: 3}
   muzzleFlash: {fileID: 6714424417585384788}
   playerCollider: {fileID: 2106643636756740589}
-  coinCollector: {fileID: 5059252182061882819}
+  coinWallet: {fileID: 5059252182061882819}
   projectileSpeed: 30
   fireRate: 0.75
   muzzleFlashDuration: 0.075

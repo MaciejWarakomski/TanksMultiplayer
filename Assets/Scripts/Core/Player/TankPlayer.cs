@@ -1,7 +1,8 @@
 ﻿using System;
-using Cinemachine;
+using Core.Coins;
 using Core.Combat;
 using UnityEngine;
+using Cinemachine;
 using Unity.Netcode;
 using Networking.Host;
 using Unity.Collections;
@@ -12,6 +13,7 @@ namespace Core.Player
     {
         [field: Header("References")]
         [field: SerializeField] public Health Health { get; private set; }
+        [field: SerializeField] public CoinWallet Wallet { get; private set; }
         
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
         

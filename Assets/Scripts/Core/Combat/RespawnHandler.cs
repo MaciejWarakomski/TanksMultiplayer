@@ -13,14 +13,14 @@ namespace Core.Combat
         {
             if (!IsServer) return;
 
-            var players = FindObjectsOfType<TankPlayer>();
+            var players = FindObjectsByType<TankPlayer>(FindObjectsSortMode.None);
             foreach (var player in players)
             {
                 HandlePlayerSpawned(player);
             }
             
             TankPlayer.OnPlayerSpawned += HandlePlayerSpawned;
-            TankPlayer.OnPlayerSpawned += HandlePlayerDespawned;
+            TankPlayer.OnPlayerDespawned += HandlePlayerDespawned;
         }
 
         public override void OnNetworkDespawn()
@@ -28,7 +28,7 @@ namespace Core.Combat
             if (!IsServer) return;
             
             TankPlayer.OnPlayerSpawned -= HandlePlayerSpawned;
-            TankPlayer.OnPlayerSpawned -= HandlePlayerDespawned;
+            TankPlayer.OnPlayerDespawned -= HandlePlayerDespawned;
         }
         
         private void HandlePlayerSpawned(TankPlayer player)
