@@ -772,7 +772,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50.106598, y: -52.07494, z: -10}
+  m_LocalPosition: {x: 2152.647, y: 724.2255, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1404,6 +1404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leaderboardEntityHolder: {fileID: 1104573670}
   leaderboardEntityPrefab: {fileID: -886153264830987281, guid: ad7128aec174d5846860fe7539f35260, type: 3}
+  entitiesToDisplay: 8
 --- !u!114 &867267102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2211,7 +2212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13942b81c9694a1381aac756cf6096cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3312229763815299130, guid: 9ff6d55d38fddde49beafabbb0a3a5cd, type: 3}
+  playerPrefab: {fileID: 5194970505098022123, guid: 9ff6d55d38fddde49beafabbb0a3a5cd, type: 3}
+  keptCoinPercentage: 50
 --- !u!4 &1378783393
 Transform:
   m_ObjectHideFlags: 0

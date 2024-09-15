@@ -64,7 +64,7 @@ namespace Core.Player
                 _timer -= Time.deltaTime;
             }
             
-            if (!_shouldFire || _timer > 0f || coinWallet.TotalCoins.Value < costToFire) return;
+            if (!_shouldFire || _timer > 0f || coinWallet.totalCoins.Value < costToFire) return;
             
             PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
             SpawnDummyProjectile(projectileSpawnPoint.position, projectileSpawnPoint.up);
@@ -74,7 +74,7 @@ namespace Core.Player
         [ServerRpc]
         private void PrimaryFireServerRpc(Vector3 spawnPos, Vector3 direction)
         {
-            if (coinWallet.TotalCoins.Value < costToFire) return;
+            if (coinWallet.totalCoins.Value < costToFire) return;
             
             coinWallet.SpendCoins(costToFire);
             
