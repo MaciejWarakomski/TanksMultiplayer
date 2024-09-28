@@ -44,7 +44,7 @@ namespace Core.Combat
 
         private void HandlePlayerDie(TankPlayer player)
         {
-            var keptCoins = (int)(player.Wallet.totalCoins.Value * (keptCoinPercentage / 100));
+            var keptCoins = (int)(player.Wallet.TotalCoins.Value * (keptCoinPercentage / 100));
             
             Destroy(player.gameObject);
 
@@ -58,7 +58,7 @@ namespace Core.Combat
             var playerInstance = Instantiate(
                 playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
             playerInstance.NetworkObject.SpawnAsPlayerObject(ownerClientId);
-            playerInstance.Wallet.totalCoins.Value += keptCoins;
+            playerInstance.Wallet.TotalCoins.Value += keptCoins;
         }
     }
 }

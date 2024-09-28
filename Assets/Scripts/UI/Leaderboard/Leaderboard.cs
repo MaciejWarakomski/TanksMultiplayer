@@ -122,7 +122,7 @@ namespace UI.Leaderboard
                 Coins = 0
             });
 
-            player.Wallet.totalCoins.OnValueChanged += (_, newCoins) => 
+            player.Wallet.TotalCoins.OnValueChanged += (_, newCoins) => 
                 HandleCoinsChanged(player.OwnerClientId, newCoins);
         }
         
@@ -137,7 +137,7 @@ namespace UI.Leaderboard
                 break;
             }
             
-            player.Wallet.totalCoins.OnValueChanged -= (_, newCoins) => 
+            player.Wallet.TotalCoins.OnValueChanged -= (_, newCoins) => 
                 HandleCoinsChanged(player.OwnerClientId, newCoins);
         }
         

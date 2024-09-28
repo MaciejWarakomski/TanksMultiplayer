@@ -16,10 +16,12 @@ namespace Core.Player
         [field: SerializeField] public CoinWallet Wallet { get; private set; }
         
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
+        [SerializeField] private SpriteRenderer minimapIconRenderer;
         
         [Header("Settings")]
         [SerializeField] private int ownerPriority = 15;
-
+        [SerializeField] private Color ownerColor;
+        
         public NetworkVariable<FixedString32Bytes> playerName = new();
         
         public static event Action<TankPlayer> OnPlayerSpawned;
@@ -38,6 +40,8 @@ namespace Core.Player
             if (IsOwner)
             {
                 virtualCamera.Priority = ownerPriority;
+                
+                minimapIconRenderer.color = ownerColor;
             }
         }
 

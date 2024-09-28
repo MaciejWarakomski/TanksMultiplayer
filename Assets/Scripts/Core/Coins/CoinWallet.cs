@@ -1,7 +1,6 @@
 ﻿using Core.Combat;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.Serialization;
 
 namespace Core.Coins
 {
@@ -18,7 +17,7 @@ namespace Core.Coins
         [SerializeField] private int minBountyCoinValue = 5;
         [SerializeField] private LayerMask layerMask;
         
-        public NetworkVariable<int> totalCoins = new();
+        public NetworkVariable<int> TotalCoins = new();
         
         private readonly Collider2D[] _coinBuffer = new Collider2D[1];
         private float _coinRadius;
@@ -41,7 +40,7 @@ namespace Core.Coins
 
         private void HandleDie(Health dyingHealht)
         {
-            var bountyValue = (int)(totalCoins.Value * (bountyPercentage / 100f));
+            var bountyValue = (int)(TotalCoins.Value * (bountyPercentage / 100f));
             var bountyCoinValue = bountyValue / minBountyCoinValue;
 
             if (bountyCoinValue < minBountyCoinValue) return;
@@ -74,12 +73,12 @@ namespace Core.Coins
             var coinValue = coin.Collect();
             if (!IsServer) return;
             
-            totalCoins.Value += coinValue;
+            TotalCoins.Value += coinValue;
         }
 
         public void SpendCoins(int value)
         {
-            totalCoins.Value -= value;
+            TotalCoins.Value -= value;
         }
     }
 }
