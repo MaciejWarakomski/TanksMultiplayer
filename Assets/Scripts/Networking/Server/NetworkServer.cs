@@ -12,6 +12,8 @@ namespace Networking.Server
         private readonly NetworkManager _networkManager;
         private readonly Dictionary<ulong, string> _clientIdToAuthId = new();
         private readonly Dictionary<string, UserData> _authIdToUserData = new();
+
+        public Action<string> OnClientLeft;
         
         public NetworkServer(NetworkManager networkManager)
         {
@@ -47,6 +49,7 @@ namespace Networking.Server
             if (_clientIdToAuthId.Remove(clientId, out var authId))
             {
                 _authIdToUserData.Remove(authId);
+                OnClientLeft?.Invoke(authId);
             }
         }
 
