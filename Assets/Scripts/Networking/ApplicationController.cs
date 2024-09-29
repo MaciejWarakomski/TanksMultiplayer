@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Networking.Host;
 using Networking.Client;
+using Networking.Server;
 using System.Threading.Tasks;
 
 namespace Networking
@@ -9,6 +10,7 @@ namespace Networking
     {
         [SerializeField] private ClientSingleton clientPrefab;
         [SerializeField] private HostSingleton hostPrefab;
+        [SerializeField] private ServerSingleton serverPrefab;
         
         private async void Start()
         {
@@ -21,7 +23,10 @@ namespace Networking
         {
             if (isDedicatedServer)
             {
-                
+                var serverSingleton = Instantiate(serverPrefab);
+                await serverSingleton.CreateServer();
+
+                await serverSingleton.GameManager.StartGameServerAsync();
             }
             else
             {

@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Networking.Shared;
 using System.Collections.Generic;
+using Unity.Netcode.Transports.UTP;
 
 namespace Networking.Server
 {
@@ -23,6 +24,13 @@ namespace Networking.Server
             networkManager.OnServerStarted += OnNetworkReady;
         }
 
+        public bool OpenConnection(string ip, int port)
+        {
+            var unityTransport = _networkManager.gameObject.GetComponent<UnityTransport>();
+            unityTransport.SetConnectionData(ip, (ushort)port);
+            return _networkManager.StartServer();
+        }
+        
         private void ApprovalCheck(
             NetworkManager.ConnectionApprovalRequest request, 
             NetworkManager.ConnectionApprovalResponse response)
