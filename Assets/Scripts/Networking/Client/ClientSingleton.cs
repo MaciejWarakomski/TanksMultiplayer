@@ -14,10 +14,7 @@ namespace Networking.Client
             {
                 if (_instance) return _instance;
                 _instance = FindObjectOfType<ClientSingleton>();
-                if (_instance) return _instance;
-                
-                Debug.LogError("No ClientSingleton in the scene!");
-                return null;
+                return _instance ? _instance : null;
             }
         }
 

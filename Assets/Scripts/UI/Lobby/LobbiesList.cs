@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Networking.Client;
 using Unity.Services.Lobbies;
 using System.Collections.Generic;
 using Unity.Services.Lobbies.Models;
@@ -8,10 +7,10 @@ namespace UI.Lobby
 {
     public class LobbiesList : MonoBehaviour
     {
+        [SerializeField] private MainMenu mainMenu;
         [SerializeField] private Transform lobbyItemParent;
         [SerializeField] private LobbyItem lobbyItemPrefab;
-
-        private bool _isJoining;
+        
         private bool _isRefreshing;
 
         private void OnEnable()
@@ -63,24 +62,9 @@ namespace UI.Lobby
             _isRefreshing = false;
         }
 
-        public async void JoinAsync(Unity.Services.Lobbies.Models.Lobby lobby)
+        public void JoinAsync(Unity.Services.Lobbies.Models.Lobby lobby)
         {
-            if (_isJoining) return;
-            _isJoining = true;
-
-            try
-            {
-                var joiningLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobby.Id);
-                var joinCode = joiningLobby.Data["JoinCode"].Value;
-
-                await ClientSingleton.Instance.GameManager.StartClientAsync(joinCode);
-            }
-            catch (LobbyServiceException e)
-            {
-                Debug.Log(e);
-            }
-
-            _isJoining = false;
+            mainMenu.JoinAsync(lobby);
         }
     }
 }

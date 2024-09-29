@@ -24,12 +24,19 @@ namespace Networking.Host
 
         private Allocation _allocation;
 
+        private readonly NetworkObject _playerPrefab;
+        
         private string _joinCode;
         private string _lobbyId;
 
         private const string GameSceneName = "Game";
         private const int MaxConnections = 20;
 
+        public HostGameManager(NetworkObject playerPrefab)
+        {
+            _playerPrefab = playerPrefab;
+        }
+        
         public async Task StartHostAsync()
         {
             try
@@ -86,7 +93,7 @@ namespace Networking.Host
                 return;
             }
 
-            NetworkServer = new NetworkServer(NetworkManager.Singleton);
+            NetworkServer = new NetworkServer(NetworkManager.Singleton, _playerPrefab);
 
             var userData = new UserData
             {

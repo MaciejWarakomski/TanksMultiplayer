@@ -3,29 +3,32 @@ using UnityEngine;
 using Unity.Netcode;
 using Networking.Shared;
 using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
 using Unity.Services.Matchmaker.Models;
 
 namespace Networking.Server
 {
     public class ServerGameManager : IDisposable
     {
-        private NetworkServer _networkServer;
-        private MultiplayAllocationService _multiplayAllocationService;
+        public NetworkServer NetworkServer { get; private set; }
+        
         private MatchplayBackfiller _backfiller;
         
-        private string _serverIP;
-        private int _serverPort;
+        private readonly MultiplayAllocationService _multiplayAllocationService;
+        private readonly NetworkObject _playerPrefab;
+        
         private int _queryPort;
         
-        private const string GameSceneName = "Game";
+        private readonly string _serverIP;
+        private readonly int _serverPort;
         
-        public ServerGameManager(string serverIP, int serverPort, int queryPort, NetworkManager manager)
+        public ServerGameManager(string serverIP, int serverPort, int queryPort, 
+            NetworkManager manager, NetworkObject playerPrefab)
         {
             _serverIP = serverIP;
             _serverPort = serverPort;
             _queryPort = queryPort;
-            _networkServer = new NetworkServer(manager);
+            
+            NetworkServer = new NetworkServer(manager, playerPrefab);
             _multiplayAllocationService = new MultiplayAllocationService();
         }
         
@@ -40,8 +43,8 @@ namespace Networking.Server
                 if (matchmakerPayload != null)
                 {
                     await StartBackfill(matchmakerPayload);
-                    _networkServer.OnUserJoined += UserJoined;
-                    _networkServer.OnUserLeft += UserLeft;
+                    NetworkServer.OnUserJoined += UserJoined;
+                    NetworkServer.OnUserLeft += UserLeft;
                 }
                 else
                 {
@@ -53,13 +56,11 @@ namespace Networking.Server
                 Debug.LogWarning(e);
             }
             
-            if (!_networkServer.OpenConnection(_serverIP, _serverPort))
+            if (!NetworkServer.OpenConnection(_serverIP, _serverPort))
             {
                 Debug.LogWarning("NetworkServer did not start as expected.");
                 return;
             }
-            
-            NetworkManager.Singleton.SceneManager.LoadScene(GameSceneName, LoadSceneMode.Single);
         }
 
         private async Task<MatchmakingResults> GetMatchmakerPayload()
@@ -121,12 +122,12 @@ namespace Networking.Server
         
         public void Dispose()
         {
-            _networkServer.OnUserJoined -= UserJoined;
-            _networkServer.OnUserLeft -= UserLeft;
+            NetworkServer.OnUserJoined -= UserJoined;
+            NetworkServer.OnUserLeft -= UserLeft;
             
             _backfiller?.Dispose();
             _multiplayAllocationService?.Dispose();
-            _networkServer?.Dispose();
+            NetworkServer?.Dispose();
         }
     }
 }

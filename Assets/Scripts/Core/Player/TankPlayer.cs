@@ -5,6 +5,8 @@ using UnityEngine;
 using Cinemachine;
 using Unity.Netcode;
 using Networking.Host;
+using Networking.Server;
+using Networking.Shared;
 using Unity.Collections;
 using UnityEngine.Serialization;
 
@@ -33,7 +35,10 @@ namespace Core.Player
         {
             if (IsServer)
             {
-                var userData = HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+                var userData = IsHost ? 
+                    HostSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId) : 
+                    ServerSingleton.Instance.GameManager.NetworkServer.GetUserDataByClientId(OwnerClientId);
+                
                 playerName.Value = userData.userName;
                 
                 OnPlayerSpawned?.Invoke(this);

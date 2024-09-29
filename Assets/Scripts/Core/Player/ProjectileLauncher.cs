@@ -3,6 +3,7 @@ using Core.Coins;
 using Core.Combat;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.EventSystems;
 
 namespace Core.Player
 {
@@ -24,8 +25,10 @@ namespace Core.Player
         [SerializeField] private int costToFire;
 
         private float _muzzleFlashTimer;
-        private bool _shouldFire;
         private float _timer;
+        
+        private bool _isPointerOverUI;
+        private bool _shouldFire;
         
         public override void OnNetworkSpawn()
         {
@@ -41,11 +44,6 @@ namespace Core.Player
             inputReader.PrimaryFireEvent -= HandlePrimaryFire;
         }
 
-        private void HandlePrimaryFire(bool shoutFire)
-        {
-            _shouldFire = shoutFire;
-        }
-
         private void Update()
         {
             if (_muzzleFlashTimer > 0f)
@@ -58,6 +56,8 @@ namespace Core.Player
             }
 
             if (!IsOwner) return;
+            
+            _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
 
             if (_timer > 0f)
             {
@@ -69,6 +69,13 @@ namespace Core.Player
             PrimaryFireServerRpc(projectileSpawnPoint.position, projectileSpawnPoint.up);
             SpawnDummyProjectile(projectileSpawnPoint.position, projectileSpawnPoint.up);
             _timer = 1 / fireRate;
+        }
+        
+        private void HandlePrimaryFire(bool shoutFire)
+        {
+            if (shoutFire && _isPointerOverUI) return;
+            
+            _shouldFire = shoutFire;
         }
         
         [ServerRpc]
