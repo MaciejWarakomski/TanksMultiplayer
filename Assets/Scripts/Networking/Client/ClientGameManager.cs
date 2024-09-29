@@ -18,6 +18,8 @@ namespace Networking.Client
     {
         private JoinAllocation _allocation;
         private NetworkClient _networkClient;
+        private MatchplayMatchmaker _matchplayMatchmaker;
+        private UserData _userData;
         
         private const string MenuSceneName = "Menu";
         
@@ -26,9 +28,20 @@ namespace Networking.Client
             await UnityServices.InitializeAsync();
 
             _networkClient = new NetworkClient(NetworkManager.Singleton);
+            _matchplayMatchmaker = new MatchplayMatchmaker();
             var authState = await AuthenticationWrapper.DoAuth();
 
-            return authState == AuthState.Authenticated;
+            if (authState == AuthState.Authenticated)
+            {
+                _userData = new UserData
+                {
+                    userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
+                    userAuthId = AuthenticationService.Instance.PlayerId
+                };
+                return true;
+            }
+
+            return false;
         }
 
         public void GoToMenu()
@@ -36,6 +49,13 @@ namespace Networking.Client
             SceneManager.LoadScene(MenuSceneName);
         }
 
+        public void StartClient(string ip, int port)
+        {
+            var unityTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            unityTransport.SetConnectionData(ip, (ushort)port);
+            ConnectClient();
+        }
+        
         public async Task StartClientAsync(string joinCode)
         {
             try
@@ -52,18 +72,43 @@ namespace Networking.Client
             var relayServerData = new RelayServerData(_allocation, "dtls");
             unityTransport.SetRelayServerData(relayServerData);
 
-            var userData = new UserData
-            {
-                userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
-                userAuthId = AuthenticationService.Instance.PlayerId
-            };
-            var payload = JsonUtility.ToJson(userData);
+            ConnectClient();
+        }
+
+        private void ConnectClient()
+        {
+            var payload = JsonUtility.ToJson(_userData);
             var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
             
             NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
             NetworkManager.Singleton.StartClient();
         }
 
+        public async void MatchmakeAsync(Action<MatchmakerPollingResult> onMachmakeResponse)
+        {
+            if (_matchplayMatchmaker.IsMatchmaking) return;
+            
+            var matchResult = await GetMatchAsync();
+            onMachmakeResponse?.Invoke(matchResult);
+        }
+        
+        private async Task<MatchmakerPollingResult> GetMatchAsync()
+        {
+            var matchmakingResult = await _matchplayMatchmaker.Matchmake(_userData);
+
+            if (matchmakingResult.result == MatchmakerPollingResult.Success)
+            {
+                StartClient(matchmakingResult.ip, matchmakingResult.port);
+            }
+            
+            return matchmakingResult.result;
+        }
+
+        public async Task CancelMatchmaking()
+        {
+            await _matchplayMatchmaker.CancelMatchmaking();
+        }
+        
         public void Disconnect()
         {
             _networkClient.Disconnect();

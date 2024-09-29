@@ -21,7 +21,7 @@ namespace Networking.Host
     public class HostGameManager : IDisposable
     {
         public NetworkServer NetworkServer { get; private set; }
-        
+
         private Allocation _allocation;
 
         private string _joinCode;
@@ -87,7 +87,7 @@ namespace Networking.Host
             }
 
             NetworkServer = new NetworkServer(NetworkManager.Singleton);
-            
+
             var userData = new UserData
             {
                 userName = PlayerPrefs.GetString(NameSelector.PlayerNameKey, "Missing Name"),
@@ -95,13 +95,13 @@ namespace Networking.Host
             };
             var payload = JsonUtility.ToJson(userData);
             var payloadBytes = System.Text.Encoding.UTF8.GetBytes(payload);
-            
+
             NetworkManager.Singleton.NetworkConfig.ConnectionData = payloadBytes;
-            
+
             NetworkManager.Singleton.StartHost();
 
             NetworkServer.OnClientLeft += HandleClientLeft;
-            
+
             NetworkManager.Singleton.SceneManager.LoadScene(GameSceneName, LoadSceneMode.Single);
         }
 
@@ -122,24 +122,23 @@ namespace Networking.Host
 
         public async void Shutdown()
         {
-            HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
-            
-            if (!string.IsNullOrEmpty(_lobbyId))
-            {
-                try
-                {
-                    await Lobbies.Instance.DeleteLobbyAsync(_lobbyId);
-                }
-                catch (LobbyServiceException e)
-                {
-                    Debug.Log(e);
-                }
+            if (string.IsNullOrEmpty(_lobbyId)) return;
 
-                _lobbyId = string.Empty;
+            HostSingleton.Instance.StopCoroutine(nameof(HeartbeatLobby));
+
+            try
+            {
+                await Lobbies.Instance.DeleteLobbyAsync(_lobbyId);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
             }
 
+            _lobbyId = string.Empty;
+
             NetworkServer.OnClientLeft -= HandleClientLeft;
-            
+
             NetworkServer?.Dispose();
         }
 

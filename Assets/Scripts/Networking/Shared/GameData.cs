@@ -23,7 +23,7 @@ namespace Networking.Shared
     {
         public string userName;
         public string userAuthId;
-        public GameInfo userGamePreferences;
+        public GameInfo userGamePreferences = new();
     }
 
     [Serializable]
@@ -35,7 +35,12 @@ namespace Networking.Shared
 
         public string ToMultiplayQueue()
         {
-            return "";
+            return gameQueue switch
+            {
+                GameQueue.Solo => "solo-queue",
+                GameQueue.Team => "team-queue",
+                _ => "solo-queue"
+            };
         }
     }
 }

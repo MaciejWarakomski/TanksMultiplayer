@@ -6,6 +6,7 @@ using Cinemachine;
 using Unity.Netcode;
 using Networking.Host;
 using Unity.Collections;
+using UnityEngine.Serialization;
 
 namespace Core.Player
 {
@@ -17,6 +18,7 @@ namespace Core.Player
         
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
         [SerializeField] private SpriteRenderer minimapIconRenderer;
+        [FormerlySerializedAs("cursorTexture")] [SerializeField] private Texture2D crosshair;
         
         [Header("Settings")]
         [SerializeField] private int ownerPriority = 15;
@@ -42,6 +44,8 @@ namespace Core.Player
                 virtualCamera.Priority = ownerPriority;
                 
                 minimapIconRenderer.color = ownerColor;
+                
+                Cursor.SetCursor(crosshair, new Vector2(crosshair.width / 2f, crosshair.height / 2f), CursorMode.Auto);
             }
         }
 
