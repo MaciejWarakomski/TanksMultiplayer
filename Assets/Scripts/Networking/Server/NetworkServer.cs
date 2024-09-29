@@ -14,6 +14,8 @@ namespace Networking.Server
         private readonly Dictionary<ulong, string> _clientIdToAuthId = new();
         private readonly Dictionary<string, UserData> _authIdToUserData = new();
 
+        public Action<UserData> OnUserJoined;
+        public Action<UserData> OnUserLeft;
         public Action<string> OnClientLeft;
         
         public NetworkServer(NetworkManager networkManager)
@@ -40,6 +42,7 @@ namespace Networking.Server
 
             _clientIdToAuthId[request.ClientNetworkId] = userData.userAuthId;
             _authIdToUserData[userData.userAuthId] = userData;
+            OnUserJoined?.Invoke(userData);
 
             response.Approved = true;
             response.Position = SpawnPoint.GetRandomSpawnPos();
@@ -56,6 +59,7 @@ namespace Networking.Server
         {
             if (_clientIdToAuthId.Remove(clientId, out var authId))
             {
+                OnUserLeft?.Invoke(_authIdToUserData[authId]);
                 _authIdToUserData.Remove(authId);
                 OnClientLeft?.Invoke(authId);
             }
